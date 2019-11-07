@@ -53,10 +53,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mypizzaproject.urls'
 
+TEMPLATE_DIRS_APPS = [os.path.join(BASE_DIR, '../templates')]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': TEMPLATE_DIRS_APPS,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
