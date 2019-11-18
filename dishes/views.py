@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import FormView, CreateView, UpdateView
 from dishes.models import Dish, Drink
 from django.http import HttpResponse 
-from dishes.forms import ContactForm, DrinkForm
+from dishes.forms import ContactForm, DrinkForm, DishForm
 
 # Create your views here.
 class MyView(View):
@@ -33,12 +33,39 @@ class MakeOrder(FormView):
 	form_class = ContactForm
 	success_url = '/'
 
+	def get_initial(self):
+		initial = super().get_initial()
+		initial['name'] = 'TEST'
+		return initial 
+
 	def form_valid(self, form):
-		form.send_email()
-		return super(ContactView).form_valid(form)
+		form.save()
+		return super().form_valid(form)
+
+	def form_invalid(self, form):
+		print('So sad!')
+		return super().form_invalid(form)
+
+
+class MakeDrinkOrder(FormView):
+	template_name = 'make_drink_order.html'
+	form_class = DrinkForm
+	success_url = '/'
+
+	def form_valid(self, form):
+		form.save()
+		return super().form_valid(form)
 
 
 class DishCreate(CreateView):
 	template_name = 'dish_form.html'
 	model = Dish
 	fields = ['name', 'ingridients', 'is_meat', 'is_vegan', 'price']
+	success_url = 'menu.html'
+
+
+class DishUpdate(UpdateView):
+	form_class = DishForm
+	model = Dish
+	template_name = 'dish_form.html'
+	success_url = '/'
