@@ -1,0 +1,7 @@
+<h1>Drinks</h1>
+<ul>
+	{% for drink in object_list %}
+		<p>{{ drink }}, price = {{ drink.price }}</p>
+	{% endfor %}
+</ul>
+<a href="/make_order/"> Сделать заказ</a>
